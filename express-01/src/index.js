@@ -1,30 +1,23 @@
 import "dotenv/config";
-import cors from "cors";
 import express from "express";
 import models, { sequelize } from "./models/index.js";
-import routes from "./routes/index.js";
+import {
+  corsMiddleware,
+  logMiddleware,
+  contextMiddleware,
+} from "./middlewares/index.js";
+import * as routes from "./routes/index.js";
 
 const app = express();
 
 app.set("trust proxy", true);
 
 // middlewares
-app.use(cors());
+app.use(corsMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// middleware the logs
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path} - ${req.ip}`);
-  next();
-});
-// middleware de autenticação "fake" + injeção dos models no req.context
-app.use(async (req, res, next) => {
-  req.context = {
-    models,
-    me: await models.User.findByLogin("rwieruch"),
-  };
-  next();
-});
+app.use(logMiddleware);
+app.use(contextMiddleware);
 
 // rotas
 app.get("/", (req, res) => {
