@@ -26,7 +26,10 @@ app.get("/", (req, res) => {
 app.use("/session", routes.session);
 app.use("/users", routes.user);
 app.use("/messages", routes.message);
-
+app.post('/util', (req, res) => {
+  return res.status(400).json({ mensagem: 'Dados incompletos.'});
+}
+)
 const port = process.env.PORT || 3000;
 
 const eraseDatabaseOnSync = process.env.ERASE_DATABASE_ON_SYNC === "true";
