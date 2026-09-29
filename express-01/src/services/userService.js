@@ -1,19 +1,21 @@
-import models from "../models/index.js";
-
-const getAllUsers = async () => {
-  return await models.User.findAll();
+const createUser = async (dados) => {
+    return await models.User.create(dados);
 };
 
-const getUserById = async (id) => {
-  return await models.User.findByPk(id);
+const updateUser = async (id, dados) => {
+    await models.User.update(dados, { where: { id } });
+    return await models.User.findByPk(id);
 };
 
-const getUserByLogin = async (login) => {
-  return await models.User.findByLogin(login);
+const deleteUser = async (id) => {
+    return await models.User.destroy({ where: { id } });
 };
 
 export default {
-  getAllUsers,
-  getUserById,
-  getUserByLogin,
+    getAllUsers,
+    getUserById,
+    getUserByLogin,
+    createUser,
+    updateUser,
+    deleteUser,
 };

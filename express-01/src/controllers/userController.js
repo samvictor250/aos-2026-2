@@ -1,31 +1,61 @@
 import { userService } from "../services/index.js";
 
 const getUsers = async (req, res) => {
-  const users = await userService.getAllUsers();
-  return res.send(users);
+    const users = await userService.getAllUsers();
+    if (!users || users.length === 0) {
+        return res.status(404).json({ error: 'Usuarios não encontrados!' });
+    }
+    return res.status(200).json(users);
 };
 
 const getUser = async (req, res) => {
-  const user = await userService.getUserById(req.params.userId);
-  return res.send(user);
+    const user = await userService.getUserById(req.params.userId);
+    if (!user) {
+        return res.status(404).json({ error: 'Usuario não encontrado!' });
+    }
+    return res.status(200).json(user);
 };
 
-const createUser = (req, res) => {
-  return res.send("POST HTTP method on user resource");
+const createUser = async (req, res) => {
+    const { username, email } = req.body;
+    
+    if (!username || !email) {
+        return res.status(400).json({ error: 'Dados incompletos!' });
+    }
+    
+    const user = await userService.createUser({ username, email });
+    return res.status(201).json(user);
 };
 
-const updateUser = (req, res) => {
-  return res.send(`PUT HTTP method on user/${req.params.userId} resource`);
+const updateUser = async (req, res) => {
+    const { userId } = req.params;
+    const { username, email } = req.body;
+    
+    const userExists = await userService.getUserById(userId);
+    if (!userExists) {
+        return res.status(404).json({ error: 'Usuario não encontrado!' });
+    }
+    
+    const user = await userService.updateUser(userId, { username, email });
+    return res.status(200).json(user);
 };
 
-const deleteUser = (req, res) => {
-  return res.send(`DELETE HTTP method on user/${req.params.userId} resource`);
+const deleteUser = async (req, res) => {
+    const { userId } = req.params;
+    
+    const userExists = await userService.getUserById(userId);
+    if (!userExists) {
+        return res.status(404).json({ error: 'Usuario não encontrado!' });
+    }
+    
+    await userService.deleteUser(userId);
+    return res.status(204).send();
 };
 
 export default {
-  getUsers,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser,
+    getUsers,
+    getUser,
+    createUser,
+    updateUser,
+    deleteUser,
 };
