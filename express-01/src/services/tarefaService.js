@@ -4,7 +4,7 @@ const createTarefa = async (dadosTarefa) => {
   return await models.Task.create(dadosTarefa);
 };
 
-const getTarefas = async () => {
+const getAllTarefas = async () => {
   return await models.Task.findAll();
 };
 
