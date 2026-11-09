@@ -15,7 +15,8 @@ const getTarefaById = async (objectId) => {
 const updateTarefa = async (objectId, dadosTarefa) => {
   const tarefa = await models.Task.findByPk(objectId);
 
-  if (!tarefa) return null;
+  if (!tarefa) 
+    return null;
 
   return await tarefa.update(dadosTarefa);
 };
@@ -23,7 +24,8 @@ const updateTarefa = async (objectId, dadosTarefa) => {
 const deleteTarefa = async (objectId) => {
   const tarefa = await models.Task.findByPk(objectId);
 
-  if (!tarefa) return null;
+  if (!tarefa) 
+    return null;
 
   await tarefa.destroy();
 
@@ -32,7 +34,7 @@ const deleteTarefa = async (objectId) => {
 
 export default {
   createTarefa,
-  getTarefas,
+  getAllTarefas,
   getTarefaById,
   updateTarefa,
   deleteTarefa,

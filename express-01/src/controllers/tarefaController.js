@@ -1,6 +1,12 @@
 import { tarefaService } from "../services/index.js";
 
 const createTarefa = async (req, res) => {
+  const { descricao } = req.body;
+
+  if (!descricao) {
+    return res.status(400).json({ error: "Descrição não fornecida.", });
+  }
+
   const task = await tarefaService.createTarefa(req.body);
 
   return res.status(201).json(task);
@@ -23,11 +29,9 @@ const getTarefaById = async (req, res) => {
 };
 
 const updateTarefa = async (req, res) => {
-  const { descricao, concluida } = req.body;
-
   const task = await tarefaService.updateTarefa(
     req.params.objectId,
-    { descricao, concluida }
+    req.body
   );
 
   if (!task) {
@@ -47,7 +51,7 @@ const deleteTarefa = async (req, res) => {
   return res.status(204).send();
 };
 
-export {
+export default{
   createTarefa,
   getAllTarefas,
   getTarefaById,

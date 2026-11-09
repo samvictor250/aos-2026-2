@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { userController } from "../controllers/index.js";
+import { tarefaController } from "../controllers/index.js";
 
-router.get();
-router.get();
-router.post();
-router.put();
-router.delete();
+const router = Router();
 
-export default router
+router.get("/", tarefaController.getAllTarefas );
+router.get("/:objectId", tarefaController.getTarefaById);
+router.post("/", tarefaController.createTarefa);
+router.put("/:objectId", tarefaController.updateTarefa);
+router.delete("/:objectId", tarefaController.deleteTarefa);
+
+export default router;
