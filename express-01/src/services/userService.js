@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+
 import models from "../models/index.js";
 
 const getAllUsers = async () => {
@@ -10,14 +10,7 @@ const getUserById = async (id) => {
 };
 
 const getUserByLogin = async (login) => {
-    return await models.User.findOne({
-        where: {
-            [Op.or]: [
-                { username: login },
-                { email: login },
-            ],
-        },
-    });
+    return await models.User.findByLogin(login);
 };
 
 const createUser = async (dados) => {
